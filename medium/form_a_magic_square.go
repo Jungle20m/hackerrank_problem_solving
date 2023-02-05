@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package medium
 
 func formingMagicSquare(square [][]int32) int32 {
 	squareSize := len(square)
@@ -12,15 +10,4 @@ func formingMagicSquare(square [][]int32) int32 {
 	}
 
 	return 0
-}
-
-func main() {
-	square := [][]int32{
-		{1, 2, 3},
-		{4, 5, 6},
-		{7, 8, 9},
-	}
-
-	cost := formingMagicSquare(square)
-	fmt.Println(cost)
 }
