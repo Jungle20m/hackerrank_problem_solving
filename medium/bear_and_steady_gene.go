@@ -4,65 +4,51 @@ import (
 	"fmt"
 )
 
-const input string = "GAAATAAA"
+// Example input
+// ("GAAATAAA", 8)
+// ("TGATGCCGTCCCCTCAACTTGAGTGCTCCTAATGCGTTGC", 40)
 
-func getLettersDrop(gene string, geneOfLength int) (map[string]int, int) {
-	maxLetter := geneOfLength / 4
-	minSize := 0
-	result := make(map[string]int)
-	result["A"] = 0
-	result["C"] = 0
-	result["T"] = 0
-	result["G"] = 0
+func SteadyGene(gene string, length int32) int32 {
+	m := make(map[string]int)
+	m["A"] = 0
+	m["C"] = 0
+	m["G"] = 0
+	m["T"] = 0
+
 	for _, c := range gene {
 		letter := fmt.Sprintf("%c", c)
-		result[letter] += 1
+		m[letter] += 1
 	}
-	for letter, count := range result {
-		if count <= maxLetter {
-			delete(result, letter)
-		} else {
-			result[letter] = count - maxLetter
-			minSize += result[letter]
-		}
-	}
-	return result, minSize
-}
 
-func checkNumberCharInString(s string, c string, number int) bool {
-	count := 0
-	for _, val := range s {
-		char := fmt.Sprintf("%c", val)
-		if char == c {
-			count += 1
-		}
-		if count >= number {
-			return true
-		}
-	}
-	return false
-}
+	var left int32
+	var right int32
+	min := length
+	steady := len(gene) / 4
 
-func getMinimumSize(gene string, geneOfLength int, lettersDrop map[string]int, minSize int) int32 {
-	for i := 0; i <= geneOfLength-minSize; i++ {
-		filterSize := minSize + i
-		for pos := 0; pos < geneOfLength-filterSize+1; pos++ {
-			subGene := gene[pos : pos+filterSize]
-			check := true
-			for letter, count := range lettersDrop {
-				if checkNumberCharInString(subGene, letter, count) != true {
-					check = false
-				}
-			}
-			if check {
-				return int32(len(subGene))
+	for true {
+		for m["A"] > steady || m["C"] > steady || m["G"] > steady || m["T"] > steady {
+			letter := fmt.Sprintf("%c", gene[right])
+			m[letter]--
+			right++
+
+			if right == length {
+				break
 			}
 		}
-	}
-	return 0
-}
+		if right == length {
+			break
+		}
 
-func SteadyGene(gene string) int32 {
-	lettersDrop, minSize := getLettersDrop(gene, 8)
-	return getMinimumSize(gene, len(gene), lettersDrop, minSize)
+		for m["A"] <= steady && m["C"] <= steady && m["G"] <= steady && m["T"] <= steady {
+			letter := fmt.Sprintf("%c", gene[left])
+			m[letter]++
+			left++
+		}
+
+		if right-left+1 < min {
+			min = right - left + 1
+		}
+	}
+
+	return min
 }

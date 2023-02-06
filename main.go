@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	result := medium.SteadyGene("GAAATAAA")
+	result := medium.SteadyGene("GAAATAAA", 8)
 
 	fmt.Println(result)
 }
