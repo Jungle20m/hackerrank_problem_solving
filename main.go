@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	result := medium.SteadyGene("GAAATAAA", 8)
-
+	price := []int64{20, 7, 8, 2, 5}
+	result := medium.MinimumLoss(price)
 	fmt.Println(result)
 }
